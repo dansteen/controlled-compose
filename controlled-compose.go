@@ -6,20 +6,23 @@ import (
 	"log"
 	"os"
 	"sync"
-	"time"
 
-	docker_events "github.com/docker/engine-api/types/events"
+	dockerclient "github.com/docker/engine-api/client"
 	"github.com/docker/libcompose/docker"
+	"github.com/docker/libcompose/docker/client"
 	"github.com/docker/libcompose/project"
 	"github.com/docker/libcompose/project/events"
 	"github.com/docker/libcompose/project/options"
 )
 
 // this function will process events that happen on our containers
-func processEvents(p *project.Project, container_events chan docker_events.Message) {
+func processEvents(p *project.Project, docker_client dockerclient.APIClient, container_events chan events.ContainerEvent) {
 
 	for event := range container_events {
 		fmt.Printf("%+v\n", event)
+		// connect to our docker server
+		info, err := docker_client.ContainerInspect(context.Background(), event.ID)
+		fmt.Printf("%+v\n", info.ContainerJSONBase.State.ExitCode)
 	}
 
 }
@@ -50,9 +53,13 @@ func main() {
 	container_events := make(chan events.Event, 2)
 	p.AddListener(container_events)
 	d_events, err := p.Events(context.Background(), "moto.org-api-init.tmp")
+
+	// create a connection to the docker server
+	docker_client, err := client.Create(client.Options{})
+
 	// run our event processor so it can pick up the events as they come in
 	wg.Add(1)
-	go processEvents(p.(*project.Project), d_events)
+	go processEvents(p.(*project.Project), docker_client, d_events)
 
 	// grab our service names
 	//services := p.(*project.Project).ServiceConfigs
@@ -65,21 +72,20 @@ func main() {
 	fmt.Printf("%v\n", <-container_events)
 
 	// get a connection to our docker host
-	client := p_context.ClientFactory.Create(service)
-	containers, err := service.Containers(context.Background())
-	container_id, err := containers[0].ID()
+	//client := p_context.ClientFactory.Create(service)
+	//containers, err := service.Containers(context.Background())
+	//container_id, err := containers[0].ID()
+	//fmt.Printf("%+v\n", container_id)
 	//client.Events(p_context, types.EventOptions{})
 
-	info, err := client.ContainerInspect(context.Background(), container_id)
-	for info.ContainerJSONBase.State.Running == true {
-		info, _ = client.ContainerInspect(context.Background(), container_id)
-		fmt.Printf("%+v\n", info.ContainerJSONBase.State.Running)
-		time.Sleep(1 * time.Second)
-	}
+	//for info.ContainerJSONBase.State.Running == true {
+	//		info, _ = client.ContainerInspect(context.Background(), container_id)
+	//	fmt.Printf("%+v\n", info.ContainerJSONBase.State.Running)
+	//	time.Sleep(1 * time.Second)
+	//}
 
-	fmt.Printf("%+v\n", info.ContainerJSONBase.State.ExitCode)
-	fmt.Printf("%v\n", <-container_events)
-	fmt.Println("hello")
+	//fmt.Printf("%v\n", <-container_events)
+	//fmt.Println("hello")
 
 	//info, err := service.Info(context.Background(), false)
 	//fmt.Printf("%+v\n", info)
