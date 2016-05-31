@@ -7,21 +7,30 @@ import (
 	"os"
 	"sync"
 
-	dockerclient "github.com/docker/engine-api/client"
+	"github.com/docker/engine-api/types"
 	"github.com/docker/libcompose/docker"
 	"github.com/docker/libcompose/docker/client"
 	"github.com/docker/libcompose/project"
 	"github.com/docker/libcompose/project/events"
 	"github.com/docker/libcompose/project/options"
+	//dockerclient "github.com/docker/libcompose/vendor/github.com/docker/engine-api/client"
 )
 
+// we create an interface to use that is a subset of docker.client.APIClient.  This resolves library issues
+type Client interface {
+	ContainerInspect(ctx context.Context, container string) (types.ContainerJSON, error)
+}
+
+type DockerClient struct {
+}
+
 // this function will process events that happen on our containers
-func processEvents(p *project.Project, docker_client dockerclient.APIClient, container_events chan events.ContainerEvent) {
+func processEvents(p *project.Project, docker_client Client, container_events chan events.ContainerEvent) {
 
 	for event := range container_events {
 		fmt.Printf("%+v\n", event)
 		// connect to our docker server
-		info, err := docker_client.ContainerInspect(context.Background(), event.ID)
+		info, _ := docker_client.ContainerInspect(context.Background(), event.ID)
 		fmt.Printf("%+v\n", info.ContainerJSONBase.State.ExitCode)
 	}
 
@@ -69,7 +78,6 @@ func main() {
 	service, err := p.CreateService("moto.org-api-init.tmp")
 	//fmt.Printf("%+v\n", service)
 	service.Up(context.Background(), options.Up{})
-	fmt.Printf("%v\n", <-container_events)
 
 	// get a connection to our docker host
 	//client := p_context.ClientFactory.Create(service)
