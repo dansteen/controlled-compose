@@ -1,0 +1,26 @@
+package: github.com/dansteen/controlled-compose
+import:
+- package: github.com/docker/engine-api
+  subpackages:
+  - types
+- package: github.com/docker/libcompose
+  subpackages:
+  - docker
+  - docker/client
+  - project
+  - project/events
+  - project/options
+  - cli/logger
+- package: golang.org/x/net
+  subpackages:
+  - context
+- package: code.google.com/p/gosqlite
+  subpackages:
+  - sqlite3
+- package: github.com/kr/pretty
+- package: gopkg.in/gyuho/goraph.v2
+- package: github.com/alonsovidales/go_graph
+- package: github.com/hpcloud/tail
+- package: golang.org/x/crypto
+  subpackages:
+  - ssh/terminal

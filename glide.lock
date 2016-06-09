@@ -1,0 +1,177 @@
+hash: 655c9fdeb46f55b73a504b0bc929a512283513eb6d68a8e165e677415873bb0e
+updated: 2016-06-08T17:37:15.111632181-04:00
+imports:
+- name: code.google.com/p/gosqlite
+  version: ""
+  subpackages:
+  - sqlite3
+- name: github.com/alonsovidales/go_fibanaccy_heap
+  version: e773bf8d240f363c5e559c8f28afd1794c45ce90
+- name: github.com/alonsovidales/go_graph
+  version: 78f2adf67c2ae172922db1256054769db6f3e1ea
+- name: github.com/Azure/go-ansiterm
+  version: 388960b655244e76e24c75f48631564eaefade62
+  subpackages:
+  - winterm
+- name: github.com/cloudfoundry-incubator/candiedyaml
+  version: 99c3df83b51532e3615f851d8c2dbb638f5313bf
+- name: github.com/docker/distribution
+  version: 6e5c5c608bc56a6fbd6185ea59bb07360f875195
+  subpackages:
+  - reference
+  - digest
+  - registry/api/errcode
+  - registry/client/auth
+  - registry/client/transport
+  - registry/client
+  - context
+  - registry/api/v2
+  - registry/storage/cache
+  - registry/storage/cache/memory
+  - uuid
+- name: github.com/docker/docker
+  version: ""
+  subpackages:
+  - pkg/urlutil
+  - cliconfig
+  - cliconfig/configfile
+  - pkg/jsonmessage
+  - pkg/promise
+  - pkg/stdcopy
+  - pkg/term
+  - reference
+  - registry
+  - runconfig/opts
+  - pkg/homedir
+  - pkg/jsonlog
+  - pkg/system
+  - pkg/term/windows
+  - image
+  - image/v1
+  - pkg/ioutils
+  - opts
+  - pkg/httputils
+  - pkg/mflag
+  - pkg/stringid
+  - pkg/tarsum
+  - pkg/mount
+  - pkg/signal
+  - builder
+  - builder/dockerignore
+  - pkg/archive
+  - pkg/fileutils
+  - pkg/progress
+  - pkg/streamformatter
+  - layer
+  - pkg/longpath
+  - pkg/random
+  - api/types/backend
+  - pkg/chrootarchive
+  - pkg/gitutils
+  - pkg/symlink
+  - pkg/idtools
+  - pkg/pools
+  - daemon/graphdriver
+  - pkg/reexec
+  - pkg/plugins
+  - pkg/plugins/transport
+- name: github.com/docker/engine-api
+  version: 6e5c5c608bc56a6fbd6185ea59bb07360f875195
+  subpackages:
+  - types
+  - client
+  - client/transport
+  - client/transport/cancellable
+  - types/container
+  - types/filters
+  - types/network
+  - types/reference
+  - types/registry
+  - types/time
+  - types/events
+  - types/strslice
+  - types/blkiodev
+  - types/versions
+- name: github.com/docker/go-connections
+  version: 6e5c5c608bc56a6fbd6185ea59bb07360f875195
+  subpackages:
+  - sockets
+  - tlsconfig
+  - nat
+- name: github.com/docker/go-units
+  version: 6e5c5c608bc56a6fbd6185ea59bb07360f875195
+- name: github.com/docker/libcompose
+  version: 80e060334ed5be9df9edfa2b754d0a8267b6caad
+  subpackages:
+  - docker
+  - docker/client
+  - project
+  - project/events
+  - project/options
+  - cli/logger
+  - config
+  - utils
+  - logger
+  - yaml
+  - docker/builder
+  - labels
+  - lookup
+  - version
+- name: github.com/flynn/go-shlex
+  version: 3f9db97f856818214da2e1057f8ad84803971cff
+- name: github.com/gorilla/context
+  version: 14f550f51af52180c2eefed15e5fd18d63c0a64a
+- name: github.com/gorilla/mux
+  version: e444e69cbd2e2e3e0749a2f3c717cec491552bbf
+- name: github.com/hpcloud/tail
+  version: a30252cb686a21eb2d0b98132633053ec2f7f1e5
+  subpackages:
+  - ratelimiter
+  - util
+  - watch
+  - winfile
+- name: github.com/kr/pretty
+  version: add1dbc86daf0f983cd4a48ceb39deb95c729b67
+- name: github.com/Microsoft/go-winio
+  version: 4f1a71750d95a5a8a46c40a67ffbed8129c2f138
+- name: github.com/opencontainers/runc
+  version: ba1568de399395774ad84c2ace65937814c542ed
+  subpackages:
+  - libcontainer/user
+- name: github.com/Sirupsen/logrus
+  version: f3cfb454f4c209e6668c95216c4744b8fddb2356
+- name: github.com/vbatts/tar-split
+  version: 226f7c74905f1fcc08ac128b517a1d65a1948eb9
+  subpackages:
+  - tar/asm
+  - tar/storage
+  - archive/tar
+- name: github.com/vdemeester/docker-events
+  version: 20e6d2db238723e68197a9e3c6c34c99a9893a9c
+- name: github.com/xeipuuv/gojsonpointer
+  version: e0fe6f68307607d540ed8eac07a342c33fa1b54a
+- name: github.com/xeipuuv/gojsonreference
+  version: e02fc20de94c78484cd5ffb007f8af96be030a45
+- name: github.com/xeipuuv/gojsonschema
+  version: d5336c75940ef31c9ceeb0ae64cf92944bccb4ee
+- name: golang.org/x/crypto
+  version: 77f4136a99ffb5ecdbdd0226bd5cb146cf56bc0e
+  subpackages:
+  - ssh/terminal
+- name: golang.org/x/net
+  version: 4876518f9e71663000c348837735820161a42df7
+  subpackages:
+  - context
+  - proxy
+- name: golang.org/x/sys
+  version: 076b546753157f758b316e59bcb51e6807c04057
+  subpackages:
+  - unix
+  - windows
+- name: gopkg.in/fsnotify.v1
+  version: 7be54206639f256967dd82fa767397ba5f8f48f5
+- name: gopkg.in/gyuho/goraph.v2
+  version: d460590d53a91b1f29347ca9b01d1e8c158cbeb2
+- name: gopkg.in/tomb.v1
+  version: c131134a1947e9afd9cecfe11f4c6dff0732ae58
+devImports: []
