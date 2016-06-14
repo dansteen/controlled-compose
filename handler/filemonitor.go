@@ -9,7 +9,7 @@ import (
 )
 
 // FileMonitor handles state conditions that result from content written to files
-func FileMonitor(filename string, monitors []types.FileMonitor, container_status chan<- types.ContainerStatus) {
+func FileMonitor(filename string, monitors []types.FileMonitor, container_status chan<- types.ContainerStatus, done <-chan struct{}) {
 	// tail our file
 	tail, err := tail.TailFile(filename, tail.Config{Follow: true, ReOpen: true, MustExist: false, Logger: tail.DiscardingLogger})
 	if err != nil {
@@ -26,6 +26,14 @@ func FileMonitor(filename string, monitors []types.FileMonitor, container_status
 				}
 				// once we have found a match we don't continue
 				return
+			}
+			// if we get signalled that we are done we also exit
+			select {
+			case <-done:
+				fmt.Printf("Exiting filemonitor for %v\n", filename)
+				return
+			default:
+				// nothing
 			}
 		}
 	}

@@ -12,7 +12,7 @@ import (
 )
 
 // Output will handle state conditions based on STDOUT or STDERR content
-func Output(client client.APIClient, container_name string, stdout bool, stderr bool, monitors []types.FileMonitor, container_status chan<- types.ContainerStatus) {
+func Output(client client.APIClient, container_name string, stdout bool, stderr bool, monitors []types.FileMonitor, container_status chan<- types.ContainerStatus, done <-chan struct{}) {
 	// if the filename is STDOUT or STDERR we handle it specially
 	logReadCloser, err := client.ContainerLogs(context.Background(), container_name, dockerTypes.ContainerLogsOptions{
 		ShowStdout: stdout,
@@ -36,6 +36,14 @@ func Output(client client.APIClient, container_name string, stdout bool, stderr 
 				}
 				// once we have found a match we don't continue
 				return
+			}
+			// if we get the message that we are done, we also exit
+			select {
+			case <-done:
+				fmt.Printf("Exiting output handler for %v\n", container_name)
+				return
+			default:
+				// nothing
 			}
 		}
 	}

@@ -49,3 +49,8 @@ type StateConditions struct {
 	FileMonitors map[string][]FileMonitor `a map of map[filepath][]FileMonitor type to store filemonitors`
 	Timeout      *Timeout                 `how long we should wait (in seconds) for a success prior to automatically failing.`
 }
+
+// Requires stores the requirements for each compose-file
+type Requires struct {
+	Require []string
+}
