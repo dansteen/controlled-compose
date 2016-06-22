@@ -1,4 +1,4 @@
-package main
+package control
 
 import (
 	yaml "github.com/cloudfoundry-incubator/candiedyaml"
@@ -44,4 +44,13 @@ func processRequires(file string, configFiles []string) ([]string, error) {
 		}
 	}
 	return newFiles, nil
+}
+
+// consumeConfig reads in a config file, and returns it as a byte array
+func consumeConfig(file string) ([]byte, error) {
+	content, err := ioutil.ReadFile(file)
+	if err != nil {
+		return nil, err
+	}
+	return content, err
 }

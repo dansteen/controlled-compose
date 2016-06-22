@@ -23,7 +23,7 @@ type ExitCodes struct {
 }
 
 // Contains will return true if c contains the value, otherwise false
-func (c ExitCodes) Contains(value int) bool {
+func (c *ExitCodes) Contains(value int) bool {
 	for _, item := range c.Codes {
 		if value == item {
 			return true
@@ -33,7 +33,7 @@ func (c ExitCodes) Contains(value int) bool {
 }
 
 // Len returns the number of exit codes in c
-func (c ExitCodes) Len() int {
+func (c *ExitCodes) Len() int {
 	return len(c.Codes)
 }
 

@@ -18,9 +18,15 @@ import:
   subpackages:
   - sqlite3
 - package: github.com/kr/pretty
-- package: gopkg.in/gyuho/goraph.v2
-- package: github.com/alonsovidales/go_graph
 - package: github.com/hpcloud/tail
 - package: golang.org/x/crypto
   subpackages:
   - ssh/terminal
+- package: github.com/spf13/cobra
+  subpackages:
+  - cobra
+- package: github.com/spf13/pflag
+- package: github.com/spf13/viper
+- package: github.com/twmb/algoimpl
+  subpackages:
+  - go/graph

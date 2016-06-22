@@ -1,4 +1,4 @@
-package main
+package control
 
 import (
 	"fmt"
@@ -12,8 +12,28 @@ import (
 
 // processConfig handles our config preprocessing.  We need to save off the parts of the config that we created
 // as they are not passed through to the general config
-func processConfig(services config.RawServiceMap) (config.RawServiceMap, error) {
+func (p *Project) processConfig(services config.RawServiceMap) (config.RawServiceMap, error) {
 	for name, config := range services {
+
+		// see if we need to swap out the version of this container
+		if image, found := config["image"]; found {
+			// strip off the version and repo ( if there is one)
+			imageParts := strings.Split(image.(string), ":")
+			imageParts = strings.Split(imageParts[0], "/")
+			imageName := imageParts[len(imageParts)-1]
+			// see if the name matches
+			for _, app := range p.appVersions {
+				// strip off the app version and repo
+				appParts := strings.Split(app, ":")
+				appParts = strings.Split(appParts[0], "/")
+				appName := appParts[len(appParts)-1]
+				if appName == imageName {
+					config["image"] = app
+					break
+				}
+			}
+		}
+
 		// see if we have any state conditions applied
 		if configState, found := config["state_conditions"]; found {
 			configStateConditions := configState.(map[interface{}]interface{})
@@ -98,7 +118,7 @@ func processConfig(services config.RawServiceMap) (config.RawServiceMap, error) 
 				}
 			}
 			// add the conditions we found to our list
-			stateConditions[name] = conditions
+			p.StateConditions[name] = conditions
 		}
 	}
 	return services, nil

@@ -1,22 +1,20 @@
-hash: 655c9fdeb46f55b73a504b0bc929a512283513eb6d68a8e165e677415873bb0e
-updated: 2016-06-08T17:37:15.111632181-04:00
+hash: 8ef79071899e47326c4e8a637c6f4f051cb8c61a6ffabb6ff6c5af1b3f00b1cf
+updated: 2016-06-22T15:38:13.226216319-04:00
 imports:
 - name: code.google.com/p/gosqlite
   version: ""
   subpackages:
   - sqlite3
-- name: github.com/alonsovidales/go_fibanaccy_heap
-  version: e773bf8d240f363c5e559c8f28afd1794c45ce90
-- name: github.com/alonsovidales/go_graph
-  version: 78f2adf67c2ae172922db1256054769db6f3e1ea
 - name: github.com/Azure/go-ansiterm
   version: 388960b655244e76e24c75f48631564eaefade62
   subpackages:
   - winterm
+- name: github.com/BurntSushi/toml
+  version: f706d00e3de6abe700c994cdd545a1a4915af060
 - name: github.com/cloudfoundry-incubator/candiedyaml
   version: 99c3df83b51532e3615f851d8c2dbb638f5313bf
 - name: github.com/docker/distribution
-  version: 6e5c5c608bc56a6fbd6185ea59bb07360f875195
+  version: 5ad8ac65af145ec3597b718b503b8ed2a6614bef
   subpackages:
   - reference
   - digest
@@ -32,8 +30,9 @@ imports:
 - name: github.com/docker/docker
   version: ""
   subpackages:
-  - pkg/urlutil
   - cliconfig
+  - pkg/homedir
+  - pkg/urlutil
   - cliconfig/configfile
   - pkg/jsonmessage
   - pkg/promise
@@ -42,7 +41,6 @@ imports:
   - reference
   - registry
   - runconfig/opts
-  - pkg/homedir
   - pkg/jsonlog
   - pkg/system
   - pkg/term/windows
@@ -76,30 +74,30 @@ imports:
   - pkg/plugins
   - pkg/plugins/transport
 - name: github.com/docker/engine-api
-  version: 6e5c5c608bc56a6fbd6185ea59bb07360f875195
+  version: 5ad8ac65af145ec3597b718b503b8ed2a6614bef
   subpackages:
   - types
   - client
-  - client/transport
-  - client/transport/cancellable
   - types/container
   - types/filters
   - types/network
-  - types/reference
   - types/registry
-  - types/time
   - types/events
   - types/strslice
+  - client/transport
+  - client/transport/cancellable
+  - types/reference
+  - types/time
   - types/blkiodev
   - types/versions
 - name: github.com/docker/go-connections
-  version: 6e5c5c608bc56a6fbd6185ea59bb07360f875195
+  version: 5ad8ac65af145ec3597b718b503b8ed2a6614bef
   subpackages:
+  - nat
   - sockets
   - tlsconfig
-  - nat
 - name: github.com/docker/go-units
-  version: 6e5c5c608bc56a6fbd6185ea59bb07360f875195
+  version: 5ad8ac65af145ec3597b718b503b8ed2a6614bef
 - name: github.com/docker/libcompose
   version: 80e060334ed5be9df9edfa2b754d0a8267b6caad
   subpackages:
@@ -112,17 +110,30 @@ imports:
   - config
   - utils
   - logger
+  - version
   - yaml
   - docker/builder
   - labels
   - lookup
-  - version
 - name: github.com/flynn/go-shlex
   version: 3f9db97f856818214da2e1057f8ad84803971cff
+- name: github.com/fsnotify/fsnotify
+  version: 30411dbcefb7a1da7e84f75530ad3abe4011b4f8
 - name: github.com/gorilla/context
   version: 14f550f51af52180c2eefed15e5fd18d63c0a64a
 - name: github.com/gorilla/mux
   version: e444e69cbd2e2e3e0749a2f3c717cec491552bbf
+- name: github.com/hashicorp/hcl
+  version: 5b7dbf7eefffea49afb3c9655d6582c72fae5fd1
+  subpackages:
+  - hcl/ast
+  - hcl/parser
+  - hcl/token
+  - json/parser
+  - hcl/scanner
+  - hcl/strconv
+  - json/scanner
+  - json/token
 - name: github.com/hpcloud/tail
   version: a30252cb686a21eb2d0b98132633053ec2f7f1e5
   subpackages:
@@ -130,16 +141,39 @@ imports:
   - util
   - watch
   - winfile
+- name: github.com/inconshreveable/mousetrap
+  version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 - name: github.com/kr/pretty
   version: add1dbc86daf0f983cd4a48ceb39deb95c729b67
+- name: github.com/magiconair/properties
+  version: c265cfa48dda6474e208715ca93e987829f572f8
 - name: github.com/Microsoft/go-winio
   version: 4f1a71750d95a5a8a46c40a67ffbed8129c2f138
+- name: github.com/mitchellh/mapstructure
+  version: d2dd0262208475919e1a362f675cfc0e7c10e905
 - name: github.com/opencontainers/runc
   version: ba1568de399395774ad84c2ace65937814c542ed
   subpackages:
   - libcontainer/user
 - name: github.com/Sirupsen/logrus
   version: f3cfb454f4c209e6668c95216c4744b8fddb2356
+- name: github.com/spf13/cast
+  version: 27b586b42e29bec072fe7379259cc719e1289da6
+- name: github.com/spf13/cobra
+  version: bc81c21bd0d8be5ba2d6630a505d79d4467566e7
+  subpackages:
+  - cobra
+- name: github.com/spf13/jwalterweatherman
+  version: 33c24e77fb80341fe7130ee7c594256ff08ccc46
+- name: github.com/spf13/pflag
+  version: 367864438f1b1a3c7db4da06a2f55b144e6784e0
+- name: github.com/spf13/viper
+  version: c1ccc378a054ea8d4e38d8c67f6938d4760b53dd
+- name: github.com/twmb/algoimpl
+  version: 716f8e78b563212cfefb120bedc265741f51d1a4
+  subpackages:
+  - go/graph
+  - go/graph/lite
 - name: github.com/vbatts/tar-split
   version: 226f7c74905f1fcc08ac128b517a1d65a1948eb9
   subpackages:
@@ -170,8 +204,8 @@ imports:
   - windows
 - name: gopkg.in/fsnotify.v1
   version: 7be54206639f256967dd82fa767397ba5f8f48f5
-- name: gopkg.in/gyuho/goraph.v2
-  version: d460590d53a91b1f29347ca9b01d1e8c158cbeb2
 - name: gopkg.in/tomb.v1
   version: c131134a1947e9afd9cecfe11f4c6dff0732ae58
+- name: gopkg.in/yaml.v2
+  version: a83829b6f1293c91addabc89d0571c246397bbf4
 devImports: []
