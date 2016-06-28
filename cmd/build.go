@@ -61,7 +61,12 @@ func build(cmd *cobra.Command, args []string) {
 	}
 
 	for _, serviceName := range project.SortedServices() {
-		fmt.Printf("%+v\n", project.Services[serviceName].Config().Build.Args)
+		// if our service has a build component, we build it. Otherwise we skip it.
+		if project.Services[serviceName].Config().Build.Context == "" {
+			fmt.Printf("%v does not have a build section. Skipping.\n", serviceName)
+			continue
+		}
+
 		err := project.Services[serviceName].Build(context.Background(), options.Build{
 			NoCache:     false,
 			ForceRemove: true,

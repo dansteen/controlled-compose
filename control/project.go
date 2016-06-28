@@ -52,6 +52,7 @@ func GenProject(name string, files []string, appVersions []string) (Project, err
 
 	// create a context for our project
 	p_context := docker.Context{
+
 		Context: project.Context{
 			ProjectName:         name,
 			ComposeFiles:        []string{"-"},
