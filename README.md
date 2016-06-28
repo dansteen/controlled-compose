@@ -50,7 +50,7 @@ The following state conditions are currently available to control the compose ru
 
 
 | Condition | Parameters | Values | Description 
-| --------- | ---------- | ----------- |
+| --------- | ---------- | ----------- | ---------
 | exit      |  None      |        | An array of exit codes to treat as success.  Any exit not included in this list will result in a failure.  The special value "-1" is used to indicate that **any** exit should be considered a failure (i.e. the process is supposed to continue to run)
 | timeout   |            |        | Only give the supplied amount of time prior to `state` returned
 |           | duration   |        | Value in seconds to wait prior to `state` being returned
