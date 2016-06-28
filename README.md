@@ -37,6 +37,7 @@ controlled-compose adds some additional config stanzas to the compose-file speci
 ## Available State Conditions
 The following state condistions are currently available to control the compose run:
 
+
 | Condition | Parameters | Values | Description 
 | --------- | ---------- | ----------- |
 | exit      |  None      |        | An array of exit codes to treat as success.  Any exit not included in this list will result in a failure.  The special value "-1" is used to indicate that **any** exit should be considered a failure (i.e. the process is supposed to continue to run)
