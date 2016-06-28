@@ -9,8 +9,8 @@ Controlled-compose uses [libcompose](https://github.com/docker/libcompose) for m
 
 Note:  We are waiting for the following two issues to be resolved in [libcompose](https://github.com/docker/libcompose) prior to being able to use this application:
 
-- [] https://github.com/docker/libcompose/pull/294
-- [] https://github.com/docker/libcompose/issues/147
+- [ ] https://github.com/docker/libcompose/pull/294
+- [ ] https://github.com/docker/libcompose/issues/147
 
 
 
@@ -42,9 +42,10 @@ controlled-compose adds some additional config stanzas to the compose-file speci
 | Stanza | Parent |  Description
 | ------ | ----- | -----------
 | require | None |  Pull in the file mentioned as a prerequisite to this file.  File paths are either absolute or relative to the referencing file.
-| state_conditions | service name | The parent config stanza for our state conditions
+| state_conditions | service name | The parent config stanza for our state conditions |
 
-# Available State Conditions
+## Available State Conditions
+
 The following state conditions are currently available to control the compose run.
 
 
@@ -134,3 +135,6 @@ services:
         status: failure
 ```
 This example builds on the above, and starts up an application that uses the databases created previously.  It starts the application, and expects it to keep running.   It monitors the file /var/log/application.log for the supplied regex, and if it finds it, continues starting subsequent containers.  If it does not find it in 300 seconds it exits with a failure and subsequent containers are not started.  Note that the file path provided is the path to the file **inside** the docker container.  However, the actual monitoring occurs **outside** of the container, so we need to export that path as a volume.  If that path is not exported in the "volumes" stanza already, it will be automatically added with an unique mountpoint.
+
+# TODO
+ - Add a Makefile
