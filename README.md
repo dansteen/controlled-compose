@@ -1,9 +1,18 @@
 # controlled-compose
+
+
 Re-implementation of docker-compose that allows greater control over the container startup process.
 
 Docker-Compose is a great tool.  However, when trying to use it in a CI/CD pipeline, it has a few issues.   Most noticeable of these is the lack of ability to manage the startup process of the containers in your composition.   Docker-compose will start up the containers in order, however it will not wait for applications to be "ready", and it will happily continue starting containers in the event of failures up the chain.   Docker-compose does have the option to --abort-on-container-exit, but sometimes containers are running one-off configuration commands, and are supposed to exit.  These as, well as a few other issues, led to the creation of controlled-compose - an application that gives you control over how your containers are started, what constitutes a successful or failed start, and what events to wait for prior to continue starting containers.  
 
 Controlled-compose uses [libcompose](https://github.com/docker/libcompose) for most of it's docker interaction.  
+
+Note:  We are waiting for the following two issues to be resolved in [libcompose](https://github.com/docker/libcompose) prior to being able to use this application:
+
+- [] https://github.com/docker/libcompose/pull/294
+- [] https://github.com/docker/libcompose/issues/147
+
+
 
 # Features
 
@@ -15,6 +24,7 @@ Controlled-compose adds the following features:
 - List on STDOUT or STDERR for regex to indicate success or failure
 - Monitor a file for regex to indicate success or failure
 - Adjust "volumes:" stanza paths to be relative to the CWD rather than the location of the compose file
+
 
 # Commands
 
@@ -34,7 +44,7 @@ controlled-compose adds some additional config stanzas to the compose-file speci
 | require | None |  Pull in the file mentioned as a prerequisite to this file.  File paths are either absolute or relative to the referencing file.
 | state_conditions | service name | The parent config stanza for our state conditions
 
-## Available State Conditions
+# Available State Conditions
 The following state conditions are currently available to control the compose run.
 
 
@@ -50,10 +60,9 @@ The following state conditions are currently available to control the compose ru
 |             | status   | success &#124; failure | The status to act on if the regex is found
 
 ## Examples
-This demonstrates how to use controlled-compose to start a postgres container and wait until it is ready prior to starting subsequent containers.  This will start the postgres container, and expect it to keep running.  It will then monitor STDOUT until it finds a string that matches the supplied regex.  If it does not find the regex in 60 seconds, or if the process exits.  The container will fail and subsequent containers will not be started.  If it finds the regex, it will move on to starting other containers:
 
 
-### postgres.yml
+#### postgres.yml
 ```
 version: '2'
 services:
@@ -73,10 +82,11 @@ services:
           regex: PostgreSQL init process complete; ready for start up.
           status: success
 ```
+This demonstrates how to use controlled-compose to start a postgres container and wait until it is ready prior to starting subsequent containers.  This will start the postgres container, and expect it to keep running.  It will then monitor STDOUT until it finds a string that matches the supplied regex.  If it does not find the regex in 60 seconds, or if the process exits.  The container will fail and subsequent containers will not be started.  If it finds the regex, it will move on to starting other containers:
 
-This example builds on the previous example and demonstrates how to run one-off configuration commands.  It will run the command, and expect it to exit with an exit code of 0.  It will wait 10 seconds for it to finish, and if it has not completed in that time, will fail:
+-----------------
 
-### config-postgres.yml
+#### config-postgres.yml
 
 ```
 require: postgres.yml
@@ -98,11 +108,11 @@ services:
     depends_on:
       - db.local
 ```
+This example builds on the previous example and demonstrates how to run one-off configuration commands.  It will run the command, and expect it to exit with an exit code of 0.  It will wait 10 seconds for it to finish, and if it has not completed in that time, will fail:
 
+---------------
 
-This example builds on the above, and starts up an application that uses the databases created previously.  It starts the application, and expects it to keep running.   It monitors the file /var/log/application.log for the supplied regex, and if it finds it, continues starting subsequent containers.  If it does not find it in 300 seconds it exits with a failure and subsequent containers are not started.  Note that the file path provided is the path to the file **inside** the docker container.  However, the actual monitoring occurs **outside** of the container, so we need to export that path as a volume.  If that path is not exported in the "volumes" stanza already, it will be automatically added with an unique mountpoint.
-
-### application.yml
+#### application.yml
 ```
 require: config-postgres.yml
 version: '2'
@@ -123,3 +133,4 @@ services:
         duration: 300
         status: failure
 ```
+This example builds on the above, and starts up an application that uses the databases created previously.  It starts the application, and expects it to keep running.   It monitors the file /var/log/application.log for the supplied regex, and if it finds it, continues starting subsequent containers.  If it does not find it in 300 seconds it exits with a failure and subsequent containers are not started.  Note that the file path provided is the path to the file **inside** the docker container.  However, the actual monitoring occurs **outside** of the container, so we need to export that path as a volume.  If that path is not exported in the "volumes" stanza already, it will be automatically added with an unique mountpoint.
