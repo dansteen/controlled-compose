@@ -3,7 +3,7 @@
 
 Re-implementation of docker-compose that allows greater control over the container startup process.
 
-Docker-Compose is a great tool.  However, when trying to use it in a CI/CD pipeline, it has a few issues.   Most noticeable of these is the lack of ability to manage the startup process of the containers in your composition.   Docker-compose will start up the containers in order, however it will not wait for applications to be "ready", and it will happily continue starting containers in the event of failures up the chain.   Docker-compose does have the option to --abort-on-container-exit, but sometimes containers are running one-off configuration commands, and are supposed to exit.  These as, well as a few other issues, led to the creation of controlled-compose - an application that gives you control over how your containers are started, what constitutes a successful or failed start, and what events to wait for prior to continue starting containers.  
+Docker-Compose is a great tool.  However, when trying to use it in a CI/CD pipeline, it has a few issues.   Most noticeable of these is the lack of ability to manage the startup process of the containers in your composition.   Docker-compose will start up the containers in order, however it will not wait for applications to be "ready", and it will happily continue starting containers in the event of failures up the chain.   Docker-compose does have the option to --abort-on-container-exit, but sometimes containers are running one-off configuration commands, and are supposed to exit.  These, as well as a few other issues, led to the creation of controlled-compose - an application that gives you control over how your containers are started, what constitutes a successful or failed start, and what events to wait for prior to continue starting containers.  
 
 Controlled-compose uses [libcompose](https://github.com/docker/libcompose) for most of it's docker interaction.  
 
@@ -21,9 +21,10 @@ Controlled-compose adds the following features:
 - Add a "require" config stanza that allows requiring other compose files as prerequisites to the current one.
 - Set success and fail exit codes for containers. Or specify that they should not exit.
 - Set a timeout after which a container will be marked succeeded or failed.
-- List on STDOUT or STDERR for regex to indicate success or failure
+- Listen on STDOUT or STDERR for regex to indicate success or failure
 - Monitor a file for regex to indicate success or failure
 - Adjust "volumes:" stanza paths to be relative to the CWD rather than the location of the compose file
+- Change volume mapping to use the $CWD rather than the location of the compose file
 
 
 # Commands
@@ -83,7 +84,7 @@ services:
           regex: PostgreSQL init process complete; ready for start up.
           status: success
 ```
-This demonstrates how to use controlled-compose to start a postgres container and wait until it is ready prior to starting subsequent containers.  This will start the postgres container, and expect it to keep running.  It will then monitor STDOUT until it finds a string that matches the supplied regex.  If it does not find the regex in 60 seconds, or if the process exits.  The container will fail and subsequent containers will not be started.  If it finds the regex, it will move on to starting other containers:
+This demonstrates how to use controlled-compose to start a postgres container and wait until it is ready prior to starting subsequent containers.  This will start the postgres container, and expect it to keep running.  It will then monitor STDOUT until it finds a string that matches the supplied regex.  If it does not find the regex in 60 seconds, or if the process exits.  The container will fail and subsequent containers will not be started.  If it finds the regex, it will move on to starting other containers.
 
 -----------------
 
@@ -109,7 +110,7 @@ services:
     depends_on:
       - db.local
 ```
-This example builds on the previous example and demonstrates how to run one-off configuration commands.  It will run the command, and expect it to exit with an exit code of 0.  It will wait 10 seconds for it to finish, and if it has not completed in that time, will fail:
+This example builds on the previous example and demonstrates how to run one-off configuration commands.  It will run the command, and expect it to exit with an exit code of 0.  It will wait 10 seconds for it to finish, and if it has not completed in that time, will fail.
 
 ---------------
 
