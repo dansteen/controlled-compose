@@ -25,6 +25,7 @@ Controlled-compose adds the following features:
 - Monitor a file for regex to indicate success or failure
 - Adjust "volumes:" stanza paths to be relative to the CWD rather than the location of the compose file
 - Change volume mapping to use the $CWD rather than the location of the compose file
+- Allow command line override of the image versions specified in the compose file
 
 
 # Commands
