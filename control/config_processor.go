@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/dansteen/controlled-compose/types"
 	"github.com/docker/libcompose/config"
+	"github.com/imdario/mergo.git"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -32,6 +33,15 @@ func (p *Project) processConfig(services config.RawServiceMap) (config.RawServic
 					break
 				}
 			}
+		}
+
+		var serviceName string
+		// see if this service extends another. if so, apply the state_conditions to that other service
+		if extendsService, found := config["extends"]; found {
+			extendedService := extendsService.(map[interface{}]interface{})
+			serviceName = extendedService["service"].(string)
+		} else {
+			serviceName = name
 		}
 
 		// see if we have any state conditions applied
@@ -68,9 +78,9 @@ func (p *Project) processConfig(services config.RawServiceMap) (config.RawServic
 						dir := filepath.Dir(monitor["file"].(string))
 						found := false
 						// then we check if there are any volumes exported
-						if _, found := services[name]["volumes"]; found {
+						if _, found := services[serviceName]["volumes"]; found {
 							// then we check to see if our folder is present in the already exported folders for this service
-							for _, val := range services[name]["volumes"].([]interface{}) {
+							for _, val := range services[serviceName]["volumes"].([]interface{}) {
 								volume := val.(string)
 								// break out the parts
 								parts := strings.FieldsFunc(volume, func(c rune) bool { return c == ':' })
@@ -81,7 +91,7 @@ func (p *Project) processConfig(services config.RawServiceMap) (config.RawServic
 							}
 							// if no volumes were exported, we need to create the structures
 						} else {
-							services[name]["volumes"] = make([]string, 0)
+							services[serviceName]["volumes"] = make([]interface{}, 0)
 						}
 
 						// if we have not found it, then we add it in.  directories exported by this are named in the following fashion:
@@ -89,9 +99,9 @@ func (p *Project) processConfig(services config.RawServiceMap) (config.RawServic
 						if !found {
 							// build our export dir
 							currDir, _ := os.Getwd()
-							exportDir := filepath.Join(currDir, fmt.Sprintf("controlled_compose_%v", os.Getpid()), name)
+							exportDir := filepath.Join(currDir, fmt.Sprintf("controlled_compose_%v", os.Getpid()), serviceName)
 							// add in our volume
-							services[name]["volumes"] = append(services[name]["volumes"].([]interface{}), fmt.Sprintf("%v:%v", dir, exportDir))
+							services[serviceName]["volumes"] = append(services[serviceName]["volumes"].([]interface{}), fmt.Sprintf("%v:%v", dir, exportDir))
 						}
 					}
 
@@ -117,8 +127,20 @@ func (p *Project) processConfig(services config.RawServiceMap) (config.RawServic
 					Status:   timeout["status"].(string),
 				}
 			}
-			// add the conditions we found to our list
-			p.StateConditions[name] = conditions
+			// add the conditions we found to our list.  merge them if we have already set one
+			if existingConditions, found := p.StateConditions[serviceName]; found {
+				// if we are setting this via extends, the values take precedence
+				if serviceName != name {
+					mergo.Merge(&conditions, existingConditions)
+					p.StateConditions[serviceName] = conditions
+				} else {
+					mergo.Merge(&existingConditions, conditions)
+					p.StateConditions[serviceName] = existingConditions
+				}
+			} else {
+				// if this is a new value, we just add it in
+				p.StateConditions[serviceName] = conditions
+			}
 		}
 	}
 	return services, nil

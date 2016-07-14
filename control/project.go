@@ -33,7 +33,7 @@ func GenProject(name string, files []string, appVersions []string) (Project, err
 
 	// process the compose files provided on the command line for additional requirements
 	var composeFiles []string
-	var composeBytes [][]byte
+	composeBytes := make([][]byte, 0)
 	var err error
 	for _, file := range files {
 		composeFiles, err = processRequires(file, composeFiles)
@@ -42,13 +42,11 @@ func GenProject(name string, files []string, appVersions []string) (Project, err
 		}
 	}
 	// we slurp our configs manually to bypass odd docker working directory behavior
-	for _, file := range composeFiles {
-		content, err := consumeConfig(file)
-		if err != nil {
-			return p, err
-		}
-		composeBytes = append(composeBytes, content)
+	configBytes, err := consumeConfigs(composeFiles)
+	if err != nil {
+		return p, err
 	}
+	composeBytes = append(composeBytes, configBytes)
 
 	// create a context for our project
 	p_context := docker.Context{
@@ -138,11 +136,17 @@ func (p *Project) genServices() error {
 	services := make(map[string]project.Service)
 	// create our services and store them
 	for _, name := range serviceConfigs.Keys() {
-		service, err := p.ComposeProject.CreateService(name)
-		if err != nil {
-			return err
+		// we only create services that don't have an "extends" set, as those get merged with the service they extend
+		if serviceConfig, found := serviceConfigs.Get(name); found {
+			if len(serviceConfig.Extends.ToMap()) == 0 {
+
+				service, err := p.ComposeProject.CreateService(name)
+				if err != nil {
+					return err
+				}
+				services[name] = service
+			}
 		}
-		services[name] = service
 	}
 	p.Services = services
 	return nil

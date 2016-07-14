@@ -22,7 +22,10 @@ import (
 	"log"
 
 	"fmt"
+	//	"github.com/docker/libcompose/docker"
 	"github.com/docker/libcompose/docker/client"
+	//"github.com/docker/libcompose/docker/network"
+	//libcomposeProject "github.com/docker/libcompose/project"
 	"github.com/docker/libcompose/project/options"
 	"os"
 
@@ -77,6 +80,13 @@ func up(cmd *cobra.Command, args []string) {
 		log.Fatal(err)
 	}
 
+	// this does not seem to work
+	//networks, err := network.NetworksFromServices(dockerClient, projectName, project.ComposeProject.(*libcomposeProject.Project).NetworkConfigs, project.ComposeProject.(*libcomposeProject.Project).ServiceConfigs, true)
+	//if err != nil {
+	//		log.Fatal(err)
+	//	}
+	//fmt.Printf("%+v\n", networks)
+
 	// run through and start up our services
 	for _, service_name := range orderedServices {
 		// the return status of our monitors
@@ -98,6 +108,7 @@ func up(cmd *cobra.Command, args []string) {
 		}
 		// We only spin up one for each services so we can just grab the first one
 		container_name := containers[0].Name()
+		//fmt.Println(containers[0].(*docker.Container).Networks(context.Background()))
 
 		// depending on which monitors this service uses we do different things
 		// first see if there area ny state conditions at all

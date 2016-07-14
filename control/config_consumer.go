@@ -3,7 +3,9 @@ package control
 import (
 	yaml "github.com/cloudfoundry-incubator/candiedyaml"
 	"github.com/dansteen/controlled-compose/types"
+	"github.com/docker/libcompose/config"
 	"github.com/docker/libcompose/utils"
+	"github.com/imdario/mergo.git"
 	"io/ioutil"
 	"path/filepath"
 )
@@ -46,11 +48,37 @@ func processRequires(file string, configFiles []string) ([]string, error) {
 	return newFiles, nil
 }
 
-// consumeConfig reads in a config file, and returns it as a byte array
-func consumeConfig(file string) ([]byte, error) {
-	content, err := ioutil.ReadFile(file)
+// consumeConfig reads in config files, merges the services sections in the order the files are provided (or required), and returns a single byte array
+func consumeConfigs(files []string) ([]byte, error) {
+	// variables to hold our config components
+	//var services config.RawServiceMap
+	//volumes := make(map[string]*config.VolumeConfig, 0)
+	//networks := make(map[string]*config.NetworkConfig, 0)
+	//var version string
+
+	var configContent config.Config
+	var mergedConfig config.Config
+	for _, file := range files {
+		// read in our config
+		content, err := ioutil.ReadFile(file)
+		if err != nil {
+			return nil, err
+		}
+		// parse the content
+		err = yaml.Unmarshal(content, &configContent)
+		if err != nil {
+			return nil, err
+		}
+		// add the content to our existing set
+		err = mergo.Merge(&mergedConfig, configContent)
+		if err != nil {
+			return nil, err
+		}
+	}
+	yamlConfig, err := yaml.Marshal(mergedConfig)
 	if err != nil {
 		return nil, err
 	}
-	return content, err
+
+	return []byte(yamlConfig), nil
 }

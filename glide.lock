@@ -1,5 +1,5 @@
-hash: 8ef79071899e47326c4e8a637c6f4f051cb8c61a6ffabb6ff6c5af1b3f00b1cf
-updated: 2016-06-22T15:38:13.226216319-04:00
+hash: a69820067d43dd656acb61564b0068b9bb523ccebd128438e800578eb6655964
+updated: 2016-07-14T15:45:16.316104173-04:00
 imports:
 - name: code.google.com/p/gosqlite
   version: ""
@@ -14,7 +14,7 @@ imports:
 - name: github.com/cloudfoundry-incubator/candiedyaml
   version: 99c3df83b51532e3615f851d8c2dbb638f5313bf
 - name: github.com/docker/distribution
-  version: 5ad8ac65af145ec3597b718b503b8ed2a6614bef
+  version: cc376ee5418462ae1bbe589f612ee7fb2cd838e7
   subpackages:
   - reference
   - digest
@@ -74,7 +74,7 @@ imports:
   - pkg/plugins
   - pkg/plugins/transport
 - name: github.com/docker/engine-api
-  version: 5ad8ac65af145ec3597b718b503b8ed2a6614bef
+  version: 98348ad6f9c89bb10f31ac32cd1b12cbadd292b6
   subpackages:
   - types
   - client
@@ -82,24 +82,25 @@ imports:
   - types/filters
   - types/network
   - types/registry
+  - types/swarm
   - types/events
   - types/strslice
   - client/transport
   - client/transport/cancellable
   - types/reference
   - types/time
-  - types/blkiodev
   - types/versions
+  - types/blkiodev
 - name: github.com/docker/go-connections
-  version: 5ad8ac65af145ec3597b718b503b8ed2a6614bef
+  version: cc376ee5418462ae1bbe589f612ee7fb2cd838e7
   subpackages:
   - nat
   - sockets
   - tlsconfig
 - name: github.com/docker/go-units
-  version: 5ad8ac65af145ec3597b718b503b8ed2a6614bef
+  version: cc376ee5418462ae1bbe589f612ee7fb2cd838e7
 - name: github.com/docker/libcompose
-  version: 80e060334ed5be9df9edfa2b754d0a8267b6caad
+  version: a12288bd636066e330b5d39197737cd04882d164
   subpackages:
   - docker
   - docker/client
@@ -113,18 +114,19 @@ imports:
   - version
   - yaml
   - docker/builder
+  - docker/network
   - labels
   - lookup
 - name: github.com/flynn/go-shlex
   version: 3f9db97f856818214da2e1057f8ad84803971cff
 - name: github.com/fsnotify/fsnotify
-  version: 30411dbcefb7a1da7e84f75530ad3abe4011b4f8
+  version: a8a77c9133d2d6fd8334f3260d06f60e8d80a5fb
 - name: github.com/gorilla/context
   version: 14f550f51af52180c2eefed15e5fd18d63c0a64a
 - name: github.com/gorilla/mux
   version: e444e69cbd2e2e3e0749a2f3c717cec491552bbf
 - name: github.com/hashicorp/hcl
-  version: 5b7dbf7eefffea49afb3c9655d6582c72fae5fd1
+  version: d8c773c4cba11b11539e3d45f93daeaa5dcf1fa1
   subpackages:
   - hcl/ast
   - hcl/parser
@@ -146,11 +148,11 @@ imports:
 - name: github.com/kr/pretty
   version: add1dbc86daf0f983cd4a48ceb39deb95c729b67
 - name: github.com/magiconair/properties
-  version: c265cfa48dda6474e208715ca93e987829f572f8
+  version: e2f061ecfdaca9f35b2e2c12346ffc526f138137
 - name: github.com/Microsoft/go-winio
   version: 4f1a71750d95a5a8a46c40a67ffbed8129c2f138
 - name: github.com/mitchellh/mapstructure
-  version: d2dd0262208475919e1a362f675cfc0e7c10e905
+  version: 21a35fb16463dfb7c8eee579c65d995d95e64d1e
 - name: github.com/opencontainers/runc
   version: ba1568de399395774ad84c2ace65937814c542ed
   subpackages:
@@ -208,4 +210,6 @@ imports:
   version: c131134a1947e9afd9cecfe11f4c6dff0732ae58
 - name: gopkg.in/yaml.v2
   version: a83829b6f1293c91addabc89d0571c246397bbf4
+- name: https://github.com/imdario/mergo
+  version: ""
 devImports: []

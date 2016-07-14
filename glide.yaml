@@ -30,3 +30,4 @@ import:
 - package: github.com/twmb/algoimpl
   subpackages:
   - go/graph
+- package: github.com/imdario/mergo.git
