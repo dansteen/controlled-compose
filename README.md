@@ -9,8 +9,8 @@ Controlled-compose uses [libcompose](https://github.com/docker/libcompose) for m
 
 Note:  We are waiting for the following two issues to be resolved in [libcompose](https://github.com/docker/libcompose) prior to being able to use this application:
 
-- [ ] https://github.com/docker/libcompose/pull/294
-- [ ] https://github.com/docker/libcompose/issues/147
+- [X] https://github.com/docker/libcompose/pull/294
+- [X] https://github.com/docker/libcompose/issues/147 (https://github.com/docker/libcompose/pull/339)
 
 
 
