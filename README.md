@@ -7,7 +7,7 @@ Docker-Compose is a great tool.  However, when trying to use it in a CI/CD pipel
 
 Controlled-compose uses [libcompose](https://github.com/docker/libcompose) for most of it's docker interaction.  
 
-Note:  We are waiting for the following two issues to be resolved in [libcompose](https://github.com/docker/libcompose) prior to being able to use this application:
+Note:  We are waiting for the following issues to be resolved in [libcompose](https://github.com/docker/libcompose) prior to being able to use this application:
 
 - [x] https://github.com/docker/libcompose/pull/294
 - [x] https://github.com/docker/libcompose/issues/147
